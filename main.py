@@ -3,4 +3,3 @@ import pandas as pd
 
 client = client.FPLClient()
 
-client.general

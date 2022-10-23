@@ -8,19 +8,19 @@ class FPLClient:
     ENDPOINTS = ENDPOINTS
 
     def __init__(self):
-        self.general = eval('self.' + list(ENDPOINTS.keys())[0]+'()')
-        self.fixtures = eval('self.' + list(ENDPOINTS.keys())[1]+'()')
-        self.status = eval('self.' + list(ENDPOINTS.keys())[2]+'()')
-        self.details = eval('self.' + list(ENDPOINTS.keys())[3]+'()')
-        self.live = eval('self.' + list(ENDPOINTS.keys())[4]+'()')
-        self.manager_info = eval('self.' + list(ENDPOINTS.keys())[5]+'()')
-        self.manager_history = eval('self.' + list(ENDPOINTS.keys())[6]+'()')
-        self.standings = eval('self.' + list(ENDPOINTS.keys())[7]+'()')
-        self.manager_teams = eval('self.' + list(ENDPOINTS.keys())[8]+'()')
-        self.dreamteam = eval('self.' + list(ENDPOINTS.keys())[9]+'()')
-        self.setpiece = eval('self.' + list(ENDPOINTS.keys())[10]+'()')
+        self.general = self.__General()
+        self.fixtures = self.__Fixtures()
+        self.status = self.__EventStatus()
+        self.details = self.__PlayerDetails()
+        self.live = self.__GameWeekLive()
+        self.manager_info = self.__ManagerInfo()
+        self.manager_history = self.__ManagerHistory()
+        self.standings = self.__LeagueStandings()
+        self.manager_teams = self.__ManagerTeams()
+        self.dreamteam = self.__DreamTeam()
+        self.setpiece = self.__SetPiece()
 
-    class _Endpoint:
+    class __Endpoint:
         def __init__(self):
             self.ep = FPLClient.ENDPOINTS[self.__class__.__name__]
 
@@ -37,7 +37,7 @@ class FPLClient:
                     param = [param]
                 return requests.get(FPLClient.BASE + self.ep % tuple(param)).json()
 
-    class _General(_Endpoint):
+    class __General(__Endpoint):
 
         def gameweek_details(self) -> pd.DataFrame:
             """
@@ -70,34 +70,34 @@ class FPLClient:
             """
             return pd.DataFrame(self.all()['element_types'])
 
-    class _Fixtures(_Endpoint):
+    class __Fixtures(__Endpoint):
         pass
 
-    class _EventStatus(_Endpoint):
+    class __EventStatus(__Endpoint):
         pass
 
-    class _PlayerDetails(_Endpoint):
+    class __PlayerDetails(__Endpoint):
         pass
 
-    class _GameWeekLive(_Endpoint):
+    class __GameWeekLive(__Endpoint):
         pass
 
-    class _ManagerInfo(_Endpoint):
+    class __ManagerInfo(__Endpoint):
         pass
 
-    class _ManagerHistory(_Endpoint):
+    class __ManagerHistory(__Endpoint):
         pass
 
-    class _LeagueStandings(_Endpoint):
+    class __LeagueStandings(__Endpoint):
         pass
 
-    class _ManagerTeams(_Endpoint):
+    class __ManagerTeams(__Endpoint):
         pass
 
-    class _DreamTeam(_Endpoint):
+    class __DreamTeam(__Endpoint):
         pass
 
-    class _SetPiece(_Endpoint):
+    class __SetPiece(__Endpoint):
         pass
 
 
