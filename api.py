@@ -8,11 +8,19 @@ class FPLClient:
     ENDPOINTS = ENDPOINTS
 
     def __init__(self):
-        for key in FPLClient.ENDPOINTS.keys():
-            cls = eval('self.' + key)
-            setattr(self, cls.ATR_NAME, cls())
+        self.general = eval('self.' + list(ENDPOINTS.keys())[0]+'()')
+        self.fixtures = eval('self.' + list(ENDPOINTS.keys())[1]+'()')
+        self.status = eval('self.' + list(ENDPOINTS.keys())[2]+'()')
+        self.details = eval('self.' + list(ENDPOINTS.keys())[3]+'()')
+        self.live = eval('self.' + list(ENDPOINTS.keys())[4]+'()')
+        self.manager_info = eval('self.' + list(ENDPOINTS.keys())[5]+'()')
+        self.manager_history = eval('self.' + list(ENDPOINTS.keys())[6]+'()')
+        self.standings = eval('self.' + list(ENDPOINTS.keys())[7]+'()')
+        self.manager_teams = eval('self.' + list(ENDPOINTS.keys())[8]+'()')
+        self.dreamteam = eval('self.' + list(ENDPOINTS.keys())[9]+'()')
+        self.setpiece = eval('self.' + list(ENDPOINTS.keys())[10]+'()')
 
-    class __Endpoint:
+    class _Endpoint:
         def __init__(self):
             self.ep = FPLClient.ENDPOINTS[self.__class__.__name__]
 
@@ -29,9 +37,7 @@ class FPLClient:
                     param = [param]
                 return requests.get(FPLClient.BASE + self.ep % tuple(param)).json()
 
-    class _General(__Endpoint):
-
-        ATR_NAME = 'general'
+    class _General(_Endpoint):
 
         def gameweek_details(self) -> pd.DataFrame:
             """
@@ -64,35 +70,35 @@ class FPLClient:
             """
             return pd.DataFrame(self.all()['element_types'])
 
-    class _Fixtures(__Endpoint):
-        ATR_NAME = 'fixtures'
+    class _Fixtures(_Endpoint):
+        pass
 
-    class _EventStatus(__Endpoint):
-        ATR_NAME = 'event_status'
+    class _EventStatus(_Endpoint):
+        pass
 
-    class _PlayerDetails(__Endpoint):
-        ATR_NAME = 'players_details'
+    class _PlayerDetails(_Endpoint):
+        pass
 
-    class _GameWeekLive(__Endpoint):
-        ATR_NAME = 'week_live'
+    class _GameWeekLive(_Endpoint):
+        pass
 
-    class _ManagerInfo(__Endpoint):
-        ATR_NAME = 'manager_info'
+    class _ManagerInfo(_Endpoint):
+        pass
 
-    class _ManagerHistory(__Endpoint):
-        ATR_NAME = 'manager_history'
+    class _ManagerHistory(_Endpoint):
+        pass
 
-    class _LeagueStandings(__Endpoint):
-        ATR_NAME = 'league_standings'
+    class _LeagueStandings(_Endpoint):
+        pass
 
-    class _ManagerTeams(__Endpoint):
-        ATR_NAME = 'manager_teams'
+    class _ManagerTeams(_Endpoint):
+        pass
 
-    class _DreamTeam(__Endpoint):
-        ATR_NAME = 'dream_team'
+    class _DreamTeam(_Endpoint):
+        pass
 
-    class _SetPiece(__Endpoint):
-        ATR_NAME = 'set_piece'
+    class _SetPiece(_Endpoint):
+        pass
 
 
 client = FPLClient()
