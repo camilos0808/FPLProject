@@ -71,7 +71,24 @@ class FPLClient:
             return pd.DataFrame(self.all()['element_types'])
 
     class __Fixtures(__Endpoint):
-        pass
+
+        def get_table(self, week):
+            b = pd.DataFrame(self.all())
+            b = b.loc[(b['event'] < week) & ~(b['minutes'].isin([None, 0]))].copy()
+            b['team_a_points'] = 0
+            b['team_h_points'] = 0
+            b.loc[(b['team_a_score'] > b['team_h_score']), 'team_a_points'] = 3
+            b.loc[(b['team_a_score'] < b['team_h_score']), 'team_h_points'] = 3
+            b.loc[(b['team_a_score'] == b['team_h_score']), ['team_a_points', 'team_h_points']] = 1
+
+            home = b[['team_h', 'team_h_points', 'team_h_score', 'team_a_score']].copy()
+            home.columns = ['team', 'points', 'favor', 'against']
+            away = b[['team_a', 'team_a_points', 'team_a_score', 'team_h_score']].copy()
+            away.columns = ['team', 'points', 'favor', 'against']
+            tab = pd.concat([home, away])
+            tab['diff'] = tab['favor'] - tab['against']
+            tab = tab.groupby('team').sum().sort_values(['points', 'diff', 'favor', 'against'], ascending=False)
+            return tab.reset_index()
 
     class __EventStatus(__Endpoint):
         pass
