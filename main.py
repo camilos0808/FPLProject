@@ -66,7 +66,11 @@ for _ in _list:
 table_df.reset_index(inplace=True)
 table_df['index'] += 1
 table_df.columns = ['position_oppo', 'opponent_team', 'points', 'favor', 'against', 'diff', 'event']
-df = pd.merge(df, table_df[['position_oppo', 'opponent_team', 'event']], how='left', left_on=['opponent_team','event'], right_on=['opponent_team', 'event'])
+df = pd.merge(df, table_df[['position_oppo', 'opponent_team', 'event']], how='left',
+              left_on=['opponent_team', 'event'],
+              right_on=['opponent_team', 'event'])
 
+
+a = 5
 # todo Clima
 # todo
