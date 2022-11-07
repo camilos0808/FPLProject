@@ -10,4 +10,4 @@ ENDPOINTS = {
     '__ManagerTeams': 'entry/%s/event/%d/picks/',  # Manager's ID, GameWeek's ID
     '__DreamTeam': 'dream-team/%s/',  # GameWeek's ID
     '__SetPiece': 'team/set-piece-notes/',
-}
+    }

@@ -48,9 +48,9 @@ def get_all_players():
 df_ = get_all_players()
 df = df_.copy()
 
-all_fixtures = pd.DataFrame(client.fixtures.all())[['id', 'event']].set_index('id')
+all_fixtures = pd.DataFrame(client.fixtures.all())
 
-df = df.join(all_fixtures, on='fixture')
+df = df.join(all_fixtures[['id', 'event']].set_index('id'), on='fixture')
 
 table_df = pd.DataFrame()
 _list = df.event.unique()
@@ -70,6 +70,20 @@ df = pd.merge(df, table_df[['position_oppo', 'opponent_team', 'event']], how='le
               left_on=['opponent_team', 'event'],
               right_on=['opponent_team', 'event'])
 
+fix_merge = all_fixtures[['team_h', 'team_a', 'event']].copy()
+dfOppoVisit = df.loc[df['was_home']].copy()
+fix_merge.columns = ['team', 'opponent_team', 'event']
+dfOppoVisit = pd.merge(dfOppoVisit, fix_merge, how='left',
+                       left_on=['opponent_team', 'event'],
+                       right_on=['opponent_team', 'event'])
+
+dfOppoHome = df.loc[~df['was_home']].copy()
+fix_merge.columns = ['opponent_team', 'team', 'event']
+dfOppoHome = pd.merge(dfOppoHome, fix_merge, how='left',
+                      left_on=['opponent_team', 'event'],
+                      right_on=['opponent_team', 'event'])
+
+df = pd.concat([dfOppoVisit, dfOppoHome], ignore_index=True)
 
 a = 5
 # todo Clima
