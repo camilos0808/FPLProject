@@ -1,4 +1,4 @@
-import api as client
+import FPLClient as client
 import pandas as pd
 import pprint
 import requests
