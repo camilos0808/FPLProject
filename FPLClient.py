@@ -1,6 +1,11 @@
 import requests
 import pandas as pd
+import numpy as np
 from _endpoints import ENDPOINTS
+
+
+def exponential_decay(value: list, constant):
+    return list(np.exp(constant * (np.array(value) - max(value) - 1)))
 
 
 class FPLClient:
@@ -116,6 +121,3 @@ class FPLClient:
 
     class __SetPiece(__Endpoint):
         pass
-
-
-client = FPLClient()
